@@ -18,15 +18,28 @@ echo "Start compiling FFmpeg..."
 rm -rf $PREFIX
 cd $FFMPEG_SOURCE_DIR
 
+## macos
+#./configure \
+#  --prefix=$PREFIX \
+#  --enable-gpl \
+#  --enable-version3 \
+#  --disable-programs \
+#  --disable-doc \
+#  --arch=$ARCH \
+#  --extra-cflags="-arch $ARCH -march=native -fno-stack-check" \
+#  --disable-debug || exit 1
+  
+## ios arm64
 ./configure \
-  --prefix=$PREFIX \
-  --enable-gpl \
-  --enable-version3 \
-  --disable-programs \
-  --disable-doc \
-  --arch=$ARCH \
-  --extra-cflags="-arch $ARCH -march=native -fno-stack-check" \
-  --disable-debug || exit 1
+--prefix=$PREFIX
+--cc="xcrun -f --sdk iphoneos17.5 clang" \
+--arch=aarch64 \
+--cpu=generic \
+--sysroot="xcrun --sdk iphoneos17.5 --show-sdk-path" \
+--target-os=darwin \
+--extra-cflags="-arch arm64" \
+--extra-ldflags="-arch arm64 -miphoneos-version-min=7.0" \
+--enable-cross-compile
 
 make clean
 make -j8 install || exit 1

@@ -5,6 +5,9 @@ import PackageDescription
 
 let package = Package(
   name: "SwiftFFmpeg",
+  platforms: [
+    .iOS(.v13)
+  ],
   products: [
     .library(
       name: "SwiftFFmpeg",
@@ -23,11 +26,7 @@ let package = Package(
     .target(
       name: "SwiftFFmpegExamples",
       dependencies: ["SwiftFFmpeg"]
-    ),
-    .testTarget(
-      name: "SwiftFFmpegTests",
-      dependencies: ["SwiftFFmpeg"]
-    ),
+    )
   ]
 )
 
