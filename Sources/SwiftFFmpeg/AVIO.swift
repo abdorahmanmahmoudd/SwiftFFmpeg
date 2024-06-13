@@ -76,11 +76,11 @@ public final class AVIOContext {
       }
     }
     var write:
-      (@convention(c) (UnsafeMutableRawPointer?, UnsafeMutablePointer<UInt8>?, Int32) -> Int32)?
+      (@convention(c) (UnsafeMutableRawPointer?, UnsafePointer<UInt8>?, Int32) -> Int32)?
     if writeHandler != nil {
       write = { opaque, buffer, size -> Int32 in
         let value = Unmanaged<IOBox>.fromOpaque(opaque!).takeUnretainedValue().value
-        let ret = value.write!(value.opaque, buffer, Int(size))
+        let ret = value.write!(value.opaque, buffer?.mutable, Int(size))
         return Int32(ret)
       }
     }
